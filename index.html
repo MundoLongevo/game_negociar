@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negociar num Mundo Vuca-Bani</title>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdf5e6; --azul: #a2d2ff; --verde: #caffbf;
+            --amarelo: #fdffb6; --roxo: #cdb4db; --vermelho: #ffadad;
+            --laranja: #ffcc80; --text-color: #333; --border-sketch: 2.5px solid #444;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background-color: #e5e5e5; background-image: radial-gradient(#d1d1d1 1.5px, transparent 1.5px);
+            background-size: 25px 25px; font-family: 'Architects Daughter', cursive;
+            min-height: 100vh; margin: 0; padding: 10px; color: var(--text-color);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        #notebook-page {
+            background-color: var(--bg-color); width: 100%; max-width: 850px;
+            min-height: 90vh; padding: 30px; border: var(--border-sketch);
+            box-shadow: 10px 10px 0px #444; border-radius: 15px 100px 15px 100px/100px 15px 100px 15px;
+            position: relative; display: flex; flex-direction: column;
+        }
+
+        /* SELO VIBRANTE DA NOTA */
+        @keyframes vibrateNote {
+            0% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg); }
+            50% { transform: scale(1.1) rotate(2deg); filter: hue-rotate(45deg); box-shadow: 0 0 30px #7a00ff; }
+            100% { transform: scale(1) rotate(-2deg); filter: hue-rotate(0deg); }
+        }
+        .vibrant-badge {
+            width: 130px; height: 130px; border-radius: 50%;
+            background: linear-gradient(45deg, #ff007f, #7a00ff);
+            color: white; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            margin: 15px auto; border: 5px solid white;
+            animation: vibrateNote 0.8s infinite alternate;
+        }
+        .vibrant-badge span { font-size: 3.2rem; font-weight: bold; line-height: 1; }
+
+        /* MEDALHAS */
+        .medal-box { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 15px 0; }
+        .medal { 
+            background: white; border: 2px solid #444; padding: 5px 12px; 
+            border-radius: 20px; font-size: 0.85rem; font-weight: bold;
+            box-shadow: 2px 2px 0px #444;
+        }
+
+        /* POST-ITS */
+        .post-it-container { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; width: 100%; }
+        .post-it { width: 160px; padding: 10px; border: var(--border-sketch); cursor: pointer; font-size: 0.85rem; text-align: center; box-shadow: 3px 3px 0px rgba(0,0,0,0.1); }
+        #pi-comp { background: var(--amarelo); transform: rotate(2deg); }
+        #pi-harv { background: var(--verde); transform: rotate(-2deg); }
+        #pi-dict { background: var(--azul); transform: rotate(1deg); }
+        #pi-vuca { background: var(--laranja); transform: rotate(-1deg); }
+
+        /* MODAIS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--bg-color); padding: 25px; max-width: 700px; width: 100%; max-height: 85vh; overflow-y: auto; border: 3px solid #444; border-radius: 20px; }
+
+        /* INTERFACE */
+        .status-container { display: flex; justify-content: space-around; margin-bottom: 20px; border-bottom: 2px dashed #ccc; padding-bottom: 10px; font-weight: bold; font-size: 0.9rem; }
+        .bar-out { height: 14px; width: 70px; border: 2px solid #444; background: #fff; border-radius: 5px; overflow: hidden; }
+        .bar-in { height: 100%; width: 50%; transition: width 0.5s ease; background: var(--verde); }
+        .btn-option { display: block; width: 100%; padding: 15px; margin: 8px 0; background: white; border: var(--border-sketch); font-family: inherit; font-size: 1.1rem; cursor: pointer; border-radius: 10px 30px; text-align: left; }
+        .btn-option:hover { background: var(--amarelo); }
+        #feedback-box { font-size: 1.1rem; padding: 15px; border: 2px dashed #444; background: var(--amarelo); margin: 15px 0; }
+        
+        .hidden { display: none !important; }
+        footer { margin-top: auto; text-align: center; font-size: 0.9rem; padding-top: 10px; border-top: 1px solid #ddd; width: 100%; }
+        
+        @media (max-width: 600px) { .post-it { width: 46%; font-size: 0.75rem; } #notebook-page { padding: 20px; } }
+    </style>
+</head>
+<body>
+
+<div class="post-it-container">
+    <div id="pi-comp" class="post-it" onclick="openM('m-comp')"><strong>📑 Competências</strong><br>Do Negociador</div>
+    <div id="pi-harv" class="post-it" onclick="openM('m-harv')"><strong>⚖️ Pilares Harvard</strong><br>Guia Prático</div>
+    <div id="pi-dict" class="post-it" onclick="openM('m-dict')"><strong>🔎 Dicionário</strong><br>Termos Técnicos</div>
+    <div id="pi-vuca" class="post-it" onclick="openM('m-vuca')"><strong>🌍 Mundo VUCA-BANI</strong><br>O Cenário</div>
+</div>
+
+<div id="m-dict" class="modal" onclick="closeM('m-dict')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 style="background: var(--azul); text-align:center; padding:10px; border-radius:10px;">Dicionário Estratégico</h2>
+        <p><strong>Economia Comportamental:</strong> Campo que une economia e psicologia para entender por que as pessoas tomam decisões financeiras e de consumo irracionais, indo além do modelo tradicional do "homo economicus" (agente perfeitamente racional) e incorporando fatores psicológicos, sociais, emocionais e cognitivos (como vieses, hábitos e emoções) que influenciam as escolhas reais, mostrando que as decisões humanas são previsivelmente irracionais.</p>
+        <p><strong>Interesses:</strong> Necessidades reais das partes.</p>
+        <p><strong>Posições:</strong> O que cada um pede (ego).</p>
+        <p><strong>BATNA (MAPAN):</strong> Melhor alternativa se não houver acordo.</p>
+        <p><strong>ZOPA:</strong> Zona onde o acordo é possível.</p>
+        <p><strong>Critérios Objetivos:</strong> Base justa e independente para decidir.</p>
+        <p><strong>Concessões Inteligentes:</strong> Trocas estratégicas de valor.</p>
+        <p><strong>Gestão de Emoções:</strong> Parte central da negociação.</p>
+        <button class="btn-option" style="text-align:center; background: var(--amarelo);" onclick="closeM('m-dict')">Fechar</button>
+    </div>
+</div>
+
+<div id="m-comp" class="modal" onclick="closeM('m-comp')"><div class="modal-content" onclick="event.stopPropagation()">
+    <h2>As 6 Competências</h2>
+    <p>1. Antifragilidade | 2. Escuta Logoterapêutica | 3. Agilidade Cognitiva | 4. CNV | 5. Resiliência Ética | 6. Humildade Intelectual</p>
+    <button class="btn-option" onclick="closeM('m-comp')">Fechar</button>
+</div></div>
+
+<div id="m-harv" class="modal" onclick="closeM('m-harv')"><div class="modal-content" onclick="event.stopPropagation()">
+    <h2>Pilares de Harvard</h2>
+    <p>1. Pessoas vs Problema | 2. Interesses vs Posições | 3. Ganho Mútuo | 4. Critérios Objetivos | 5. MAPAN</p>
+    <button class="btn-option" onclick="closeM('m-harv')">Fechar</button>
+</div></div>
+
+<div id="m-vuca" class="modal" onclick="closeM('m-vuca')"><div class="modal-content" onclick="event.stopPropagation()">
+    <h2>Mundo VUCA-BANI</h2>
+    <p>A transição da volatilidade para a fragilidade, ansiedade, não-linearidade e incompreensibilidade.</p>
+    <button class="btn-option" onclick="closeM('m-vuca')">Fechar</button>
+</div></div>
+
+<div id="notebook-page">
+    <div id="setup-screen">
+        <h1 style="text-align:center;">Negociar num Mundo Vuca-Bani</h1>
+        <p style="text-align:center; font-size: 1.3rem; margin-bottom: 30px;">Desafio de 10 situações com Gabarito Técnico.</p>
+        <button class="btn-option" onclick="startGame()" style="text-align:center; background: var(--verde); font-weight: bold; font-size: 1.5rem;">🚀 Iniciar Simulação</button>
+    </div>
+
+    <div id="game-screen" class="hidden">
+        <div class="status-container">
+            <div>V <div class="bar-out"><div id="bar-v" class="bar-in"></div></div></div>
+            <div>C <div class="bar-out"><div id="bar-c" class="bar-in"></div></div></div>
+            <div>S <div class="bar-out"><div id="bar-s" class="bar-in"></div></div></div>
+        </div>
+        <h2 id="phase-title" style="margin-top:0;"></h2>
+        <p id="scenario-text" style="font-size: 1.2rem;"></p>
+        <div id="options-container"></div>
+        <div id="feedback-box" class="hidden"></div>
+        <button id="btn-next" class="btn-option hidden" style="background: var(--roxo); text-align: center; color: white; font-weight: bold;">Próxima Página --></button>
+    </div>
+
+    <div id="final-screen" class="hidden">
+        <h1 style="text-align:center;">Relatório de Performance</h1>
+        <div class="vibrant-badge">
+            <small>NOTA</small>
+            <span id="final-score-val">0</span>
+        </div>
+        <div id="badges-container" class="hidden" style="text-align: center;">
+            <p><strong>🏅 Medalhas Conquistadas:</strong></p>
+            <div id="badges-list" class="medal-box"></div>
+        </div>
+        <div id="final-diagnosis-box" style="background: #fff3e0; padding: 20px; border-radius: 15px; border: 3px dashed #444; text-align: center; font-size: 1.3rem;"></div>
+        <button class="btn-option" onclick="location.reload()" style="text-align: center; background: var(--azul); font-weight: bold; margin-top: 20px;">🔄 Repetir o Teste</button>
+    </div>
+    <footer>Mentor: <strong>Prof. Ricardo de Faria Barros</strong></footer>
+</div>
+
+<script>
+    let v = 50, c = 50, s = 50, currentPhase = 0, score = 0;
+    let earnedBadges = [];
+
+    const scenarios = [
+        { t: "Ultimato do Preço", d: "Varejo: Fornecedor exige +20% imediato ou corta a entrega sob alegação de custos voláteis.", ops: [
+            { text: "Critérios Objetivos: 'O que justifica esse aumento?'", p: 1, v: 20, c: 15, s: 15, f: "CORRETO (Gabarito): Você usou o Pilar 4 de Harvard.", badge: "Estrategista" },
+            { text: "Aceitar por medo da ruptura.", v: -20, c: 5, s: -10, f: "ERRADO: Reagiu ao mundo Ansioso sem um MAPAN." },
+            { text: "Ameaçar cancelar tudo.", v: -10, c: -40, s: -5, f: "ERRADO: Pilar 1 violado. Atacou a pessoa." }
+        ]},
+        { t: "Bloqueio Burocrático", d: "Público: O parceiro afirma que 'a regra não permite' mudar nada.", ops: [
+            { text: "Interesses: 'O que garante segurança jurídica para você?'", p: 1, v: 20, c: 15, s: 15, f: "CORRETO (Gabarito): Investigou interesses reais.", badge: "Diplomata" },
+            { text: "Pausa Frankliana e entender o medo dele.", p: 0.5, v: 10, c: 25, s: 20, f: "BOM: Regulou a emoção para evoluir." },
+            { text: "Tentar contornar o gestor.", v: -5, c: -30, s: -15, f: "ERRADO: Faltou Transparência Radical." }
+        ]},
+        { t: "Viral Negativo", d: "Crise: Um vídeo fake atacando sua marca viraliza. O mundo tornou-se Não-linear.", ops: [
+            { text: "Transparência Radical: Live explicando os fatos.", p: 1, v: 10, c: 40, s: 30, f: "CORRETO (Gabarito): Comunicação reconstrói confiança.", badge: "Comunicador Ágil" },
+            { text: "Silêncio total esperando passar.", v: -30, c: -30, s: -20, f: "ERRADO: O vácuo de informação gera fragilidade." },
+            { text: "Processar agressivamente.", v: 0, c: -10, s: -10, f: "REGULAR: Gera mais 'hate'." }
+        ]},
+        { t: "Dilema de Integridade", d: "Público: Oferta de 'atalho financeiro' ilegal para liberar verba pública.", ops: [
+            { text: "Recusar e reportar (Teste do Travesseiro).", p: 1, v: 0, c: 50, s: 50, f: "CORRETO (Gabarito): Integridade inabalável.", badge: "Guardião Ético" },
+            { text: "Aceitar para salvar o projeto.", v: -40, c: -50, s: -50, f: "ERRADO: A ética não é negociável." },
+            { text: "Fingir que não ouviu.", v: 0, c: -10, s: -10, f: "REGULAR: Omissão é fragilidade." }
+        ]},
+        { t: "Fornecedor Monopolista", d: "Varejo: O único fornecedor de um insumo dita regras duras.", ops: [
+            { text: "Humildade Intelectual: 'Como podemos co-criar?'", p: 1, v: 30, c: 20, s: 10, f: "CORRETO (Gabarito): Abriu novos caminhos.", badge: "Inovador" },
+            { text: "Submeter-se totalmente.", v: -40, c: 0, s: -20, f: "ERRADO: Você virou refém." },
+            { text: "Tentar enganá-lo.", v: -10, c: -50, s: -30, f: "ERRADO: Destrói parcerias." }
+        ]},
+        { t: "Corte de Verba", d: "Cenário: Corte repentino de 30% no orçamento. Exige Agilidade Cognitiva.", ops: [
+            { text: "Focar no essencial e propor parcerias.", p: 1, v: 20, c: 10, s: 30, f: "CORRETO (Gabarito): Propôs saídas criativas.", badge: "Ágil" },
+            { text: "Interromper o serviço.", v: -40, c: -10, s: -20, f: "ERRADO: Faltou pensamento lateral." },
+            { text: "Manter tudo sem explicar.", v: -50, c: -50, s: -50, f: "ERRADO: Morte da confiança." }
+        ]},
+        { t: "Ponte de Ouro", d: "Finalização: Acordo fechado, mas a outra parte parece infeliz.", ops: [
+            { text: "Ajustar itens para ambos vencerem.", p: 1, v: 10, c: 50, s: 40, f: "CORRETO (Gabarito): Garante o longo prazo.", badge: "Arquiteto de Acordos" },
+            { text: "Ignorar e lucrar.", v: 30, c: -50, s: -30, f: "ERRADO: Eles não voltarão." },
+            { text: "Sair rápido.", v: 20, c: 0, s: 0, f: "REGULAR: Faltou conexão humana." }
+        ]},
+        { t: "Conflito de Interesses", d: "Público: Um parceiro sugere contratar empresa de um parente.", ops: [
+            { text: "Critérios Objetivos: Métricas de mercado.", p: 1, v: 15, c: 25, s: 20, f: "CORRETO (Gabarito): Pilar 4: Imparcialidade.", badge: "Analista Justo" },
+            { text: "Aceitar para evitar atritos.", v: -10, c: -30, s: -20, f: "ERRADO: Perda de transparência." },
+            { text: "Adiar para sempre.", v: -20, c: 0, s: -10, f: "REGULAR: Procrastinação ineficiente." }
+        ]},
+        { t: "Impasse de ZOPA", d: "Varejo: O preço dele é maior que seu teto.", ops: [
+            { text: "Concessões Inteligentes: Prazo por preço.", p: 1, v: 20, c: 20, s: 15, f: "CORRETO (Gabarito): Criou ZOPA com criatividade.", badge: "Criativo" },
+            { text: "Abandonar a mesa irritado.", v: 0, c: -10, s: -10, f: "ERRADO: Gestão de Emoções falhou." },
+            { text: "Pagar o preço alto.", v: -50, c: 10, s: 0, f: "ERRADO: Faltou MAPAN." }
+        ]},
+        { t: "Gestão de Crise", d: "Equipe: Pânico por boatos de demissão.", ops: [
+            { text: "Escuta e Transparência Radical.", p: 1, v: 15, c: 30, s: 30, f: "CORRETO (Gabarito): Trouxe sentido ao caos.", badge: "Líder Humanista" },
+            { text: "Negar tudo sem explicar.", v: 0, c: -40, s: -30, f: "ERRADO: Aumentou a ansiedade." },
+            { text: "Delegar para o RH.", v: -10, c: -20, s: -10, f: "REGULAR: O líder deve estar presente." }
+        ]}
+    ];
+
+    function openM(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeM(id) { document.getElementById(id).style.display = 'none'; }
+
+    function startGame() {
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        renderPhase();
+    }
+
+    function renderPhase() {
+        const data = scenarios[currentPhase];
+        if(!data) return showFinal();
+        document.getElementById('phase-title').innerText = `${currentPhase + 1}/10: ${data.t}`;
+        document.getElementById('scenario-text').innerText = data.d;
+        const container = document.getElementById('options-container');
+        container.innerHTML = "";
+        data.ops.forEach(o => {
+            const b = document.createElement('button');
+            b.className = 'btn-option';
+            b.innerText = o.text;
+            b.onclick = () => selectOption(o);
+            container.appendChild(b);
+        });
+        updateBars();
+    }
+
+    function selectOption(o) {
+        v += o.v || 0; c += o.c || 0; s += o.s || 0;
+        if(o.p) score += o.p;
+        if(o.badge) earnedBadges.push(o.badge);
+        
+        const fb = document.getElementById('feedback-box');
+        fb.innerHTML = `<strong>Análise:</strong> ${o.f}`;
+        fb.classList.remove('hidden');
+        document.getElementById('options-container').innerHTML = "";
+        document.getElementById('btn-next').classList.remove('hidden');
+        updateBars();
+    }
+
+    document.getElementById('btn-next').onclick = () => {
+        currentPhase++;
+        document.getElementById('feedback-box').classList.add('hidden');
+        document.getElementById('btn-next').classList.add('hidden');
+        renderPhase();
+    };
+
+    function updateBars() {
+        document.getElementById('bar-v').style.width = Math.max(0, Math.min(100, v)) + "%";
+        document.getElementById('bar-c').style.width = Math.max(0, Math.min(100, c)) + "%";
+        document.getElementById('bar-s').style.width = Math.max(0, Math.min(100, s)) + "%";
+        document.querySelectorAll('.bar-in').forEach(b => {
+            let val = parseInt(b.style.width);
+            b.style.backgroundColor = val > 65 ? "#caffbf" : (val > 35 ? "#fdffb6" : "#ffadad");
+        });
+    }
+
+    function showFinal() {
+        document.getElementById('game-screen').classList.add('hidden');
+        document.getElementById('final-screen').classList.remove('hidden');
+        document.getElementById('final-score-val').innerText = Math.round(score);
+        
+        let diag = score >= 8 ? "🦁 LEÃO DAS PONTES: Domínio brilhante!" : (score >= 5 ? "🤹 EQUILIBRISTA: Precisa de técnica." : "🦆 NÁUFRAGO: O caos venceu.");
+        document.getElementById('final-diagnosis-box').innerHTML = diag;
+
+        if (earnedBadges.length > 0) {
+            document.getElementById('badges-container').classList.remove('hidden');
+            document.getElementById('badges-list').innerHTML = earnedBadges.map(b => `<div class="medal">🏅 ${b}</div>`).join("");
+        }
+    }
+</script>
+</body>
+</html>
