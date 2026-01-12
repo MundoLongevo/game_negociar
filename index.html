@@ -4,328 +4,218 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Professor Ricardo de Faria Barros">
-    <title>Navegador BANI - Prof. Ricardo de Faria Barros</title>
+    <title>Navegador BANI - Pilares de Harvard</title>
     <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #fdf5e6;
-            --azul: #a2d2ff;
-            --verde: #caffbf;
-            --amarelo: #fdffb6;
-            --roxo: #cdb4db;
-            --text-color: #333;
-            --border-sketch: 2px solid #444;
+            --bg-color: #fdf5e6; --azul: #a2d2ff; --verde: #caffbf;
+            --amarelo: #fdffb6; --roxo: #cdb4db; --vermelho: #ffadad;
+            --laranja: #ffcc80; --text-color: #333; --border-sketch: 2.5px solid #444;
         }
-
         body {
             background-color: #e5e5e5;
-            background-image: radial-gradient(#d1d1d1 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-image: radial-gradient(#d1d1d1 1.5px, transparent 1.5px);
+            background-size: 25px 25px;
             font-family: 'Architects Daughter', cursive;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            font-size: 19px; /* Legibilidade aumentada */
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0; padding: 20px; color: var(--text-color);
         }
-
         #notebook-page {
-            background-color: var(--bg-color);
-            width: 100%;
-            max-width: 850px;
-            min-height: 85vh;
-            padding: 40px;
-            box-shadow: 12px 12px 0px #444;
-            border: var(--border-sketch);
-            border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            background-color: var(--bg-color); width: 100%; max-width: 950px;
+            min-height: 85vh; padding: 50px; box-shadow: 15px 15px 0px #444;
+            border: var(--border-sketch); border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
+            position: relative; display: flex; flex-direction: column;
         }
 
-        /* POST-IT DE COMPETÊNCIAS */
-        #post-it {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 220px;
-            background-color: var(--amarelo);
-            padding: 15px;
-            border: var(--border-sketch);
-            box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
-            transform: rotate(2deg);
-            cursor: pointer;
-            z-index: 100;
-            transition: 0.3s;
+        /* ESTILO DOS POST-ITS */
+        .post-it {
+            position: fixed; right: 20px; width: 230px; padding: 18px; 
+            border: var(--border-sketch); box-shadow: 6px 6px 0px rgba(0,0,0,0.1); 
+            cursor: pointer; z-index: 100; font-size: 1.1rem; transition: 0.3s;
         }
-        #post-it:hover { transform: rotate(0deg) scale(1.05); }
-        
-        #modal-glossario {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
+        .post-it:hover { transform: scale(1.05) rotate(0deg); }
+        #post-it-comp { top: 20px; background-color: var(--amarelo); transform: rotate(3deg); }
+        #post-it-harvard { top: 180px; background-color: var(--verde); transform: rotate(-2deg); }
+
+        /* MODAIS */
+        .modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; 
         }
-
-        .modal-content {
-            background: var(--bg-color);
-            padding: 30px;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-            border: var(--border-sketch);
-            border-radius: 10px;
+        .modal-content { 
+            background: var(--bg-color); padding: 40px; max-width: 800px; max-height: 90vh; 
+            overflow-y: auto; border: 4px solid #444; border-radius: 25px; 
         }
+        .pillar-box { border-left: 8px solid; padding-left: 15px; margin-bottom: 25px; }
 
-        .highlight-marker { background: var(--roxo); padding: 0 5px; border-radius: 3px; }
-
-        .status-container {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-            border-bottom: 2px dashed #ccc;
-            padding-bottom: 10px;
-        }
-
-        .bar-out { height: 12px; width: 100px; border: 2px solid #444; background: #fff; border-radius: 5px; }
-        .bar-in { height: 100%; width: 50%; transition: width 0.5s ease; border-radius: 3px; }
-
-        .btn-option {
-            display: block; width: 100%; padding: 12px; margin: 8px 0;
-            background: white; border: var(--border-sketch);
-            font-family: 'Architects Daughter', cursive; cursor: pointer;
-            border-radius: 5px 15px; text-align: left;
+        /* INTERFACE */
+        .status-container { display: flex; justify-content: space-around; margin-bottom: 30px; border-bottom: 3px dashed #ccc; padding-bottom: 15px; font-weight: bold; }
+        .bar-out { height: 18px; width: 140px; border: 2px solid #444; background: #fff; border-radius: 8px; }
+        .btn-option { 
+            display: block; width: 100%; padding: 20px; margin: 12px 0; background: white; 
+            border: var(--border-sketch); font-family: 'Architects Daughter', cursive; 
+            font-size: 1.3rem; cursor: pointer; border-radius: 10px 30px; text-align: left; 
         }
         .btn-option:hover { background: var(--amarelo); }
-
-        footer { margin-top: auto; font-size: 0.8rem; text-align: right; border-top: 1px solid #ddd; padding-top: 10px; }
+        footer { margin-top: auto; font-size: 1.1rem; text-align: right; border-top: 2px solid #ddd; padding-top: 15px; }
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<div id="post-it" onclick="toggleGlossario()">
-    <strong>📚 Para Saber Mais</strong><br>
-    <small>Clique para ver as 6 competências chave.</small>
+<div id="post-it-comp" class="post-it" onclick="toggleModal('modal-comp')">
+    <strong>📚 Competências</strong><br><small>Parte 1: BANI</small>
 </div>
 
-<div id="modal-glossario" onclick="toggleGlossario()">
+<div id="post-it-harvard" class="post-it" onclick="toggleModal('modal-harvard')">
+    <strong>⚖️ Pilares Harvard</strong><br><small>Guia Prático</small>
+</div>
+
+<div id="modal-comp" class="modal" onclick="closeModals()">
     <div class="modal-content" onclick="event.stopPropagation()">
-        <h2 style="text-decoration: underline;">As 6 Competências do Navegador</h2>
+        <h2 style="text-decoration: underline;">Competências Emergentes (Parte 1)</h2>
+        <div class="pillar-box" style="border-color: var(--azul);">
+            <h3>1. Antifragilidade e Regulação Emocional</h3>
+            <p><strong>Competência:</strong> Usar o caos como combustível para evoluir.</p>
+            <p><strong>Como Desenvolver:</strong> Pausa Frankliana (Escolha sua reação).</p>
+        </div>
+        <div class="pillar-box" style="border-color: var(--laranja);">
+            <h3>2. Escuta Logoterapêutica (Sentido)</h3>
+            <p><strong>Competência:</strong> Buscar o propósito existencial do outro.</p>
+            <p><strong>Como Desenvolver:</strong> Eco e Investigação ("O que isso significa?").</p>
+        </div>
+        <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--verde);">Voltar</button>
+    </div>
+</div>
+
+<div id="modal-harvard" class="modal" onclick="closeModals()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 style="text-align:center; background: var(--vermelho);">5 Pilares da Negociação de Harvard</h2>
         
-        <p><strong>1. MAPAN (BATNA):</strong> Ter clareza da sua "Melhor Alternativa para um Acordo Negociado". Evita que você aceite acordos ruins por medo.</p>
+        <div class="pillar-box" style="border-color: var(--azul);">
+            <strong>1. Separar as Pessoas do Problema:</strong> Valide emoções, foque nos fatos técnicos. Lição: Preserve o vínculo humano.
+        </div>
+        <div class="pillar-box" style="border-color: var(--amarelo);">
+            <strong>2. Interesses vs. Posições:</strong> Investigue a necessidade oculta por trás da exigência. Lição: Busque necessidades, não egos.
+        </div>
+        <div class="pillar-box" style="border-color: var(--verde);">
+            <strong>3. Opções de Ganho Mútuo:</strong> Brainstorming criativo. Troque itens de baixo custo para você por alto valor para o outro.
+        </div>
+        <div class="pillar-box" style="border-color: var(--vermelho);">
+            <strong>4. Critérios Objetivos:</strong> Use padrões externos (Leis, IPCA, Mercado) para decidir o justo. Lição: Remove a subjetividade.
+        </div>
+        <div class="pillar-box" style="border-color: var(--roxo);">
+            <strong>5. Conhecer seu MAPAN (BATNA):</strong> Tenha um Plano B claro antes de sentar à mesa. O poder vem da sua alternativa de saída.
+        </div>
         
-        <p><strong>2. CNV:</strong> Comunicação Não-Violenta. Separar as pessoas do problema e focar em necessidades reais, não em posições agressivas.</p>
-        
-        <p><strong>3. Antifragilidade:</strong> A habilidade de não apenas resistir ao caos (resiliência), mas de se tornar melhor através dele.</p>
-        
-        <p><strong>4. Longelescência:</strong> Integração intergeracional. Unir a experiência estratégica (Sênior) com a agilidade tecnológica (Jovem).</p>
-        
-        <p><strong>5. Ponte de Ouro:</strong> Criar uma saída honrosa e vitoriosa para a contraparte, garantindo que o acordo seja sustentável.</p>
-        
-        <p><strong>6. Essencialidade:</strong> Capacidade de filtrar o ruído do mundo BANI e focar no que realmente gera valor e sentido humano.</p>
-        
-        <button class="btn-option" onclick="toggleGlossario()" style="text-align:center; background: var(--verde);">Voltar ao Jogo</button>
+        <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--azul);">Entendido!</button>
     </div>
 </div>
 
 <div id="notebook-page">
     <div id="setup-screen">
-        <h1>Diário de Bordo BANI</h1>
-        <p>Identifique-se para começar a jornada sob mentoria do Prof. Ricardo:</p>
-        <input type="text" id="player-name" placeholder="Seu nome completo...">
+        <h1>Navegador BANI</h1>
+        <p>Assine seu diário para começar a jornada estratégica:</p>
+        <input type="text" id="player-name" placeholder="Seu nome..." style="font-family: 'Architects Daughter', cursive; border-bottom: 3px dashed #444; background: transparent; padding: 15px; width: 90%; font-size: 1.6rem; outline: none;">
         <br><br>
-        <button class="btn-option" onclick="initGame()" style="text-align: center; background: var(--verde);">Iniciar Simulação</button>
+        <button class="btn-option" onclick="initGame()" style="text-align:center; background: var(--verde); font-weight: bold;">Iniciar Simulação</button>
     </div>
 
     <div id="game-screen" class="hidden">
         <div class="status-container">
-            <div>Valor (V) <div class="bar-out"><div id="bar-v" class="bar-in"></div></div></div>
-            <div>Confiança (C) <div class="bar-out"><div id="bar-c" class="bar-in"></div></div></div>
-            <div>Sentido (S) <div class="bar-out"><div id="bar-s" class="bar-in"></div></div></div>
+            <div>Valor (V) <div class="bar-out"><div id="bar-v" class="bar-in" style="height:100%; width:50%; transition: 0.5s;"></div></div></div>
+            <div>Confiança (C) <div class="bar-out"><div id="bar-c" class="bar-in" style="height:100%; width:50%; transition: 0.5s;"></div></div></div>
+            <div>Sentido (S) <div class="bar-out"><div id="bar-s" class="bar-in" style="height:100%; width:50%; transition: 0.5s;"></div></div></div>
         </div>
         <h2 id="phase-title">Cenário</h2>
-        <p id="scenario-text" style="font-size: 1.1rem; min-height: 80px;"></p>
+        <p id="scenario-text" style="font-size: 1.5rem; line-height: 1.6;"></p>
         <div id="options-container"></div>
-        <div id="feedback-box" class="hidden" style="margin: 15px 0; padding: 10px; border: 1px dashed #444; background: var(--amarelo);"></div>
-        <button id="btn-next" class="btn-option hidden" style="background: var(--roxo); text-align: center; color: white;">Próxima Página --></button>
+        <div id="feedback-box" class="hidden" style="font-size: 1.4rem; padding: 20px; border: 3px dashed #444; background: var(--amarelo);"></div>
+        <button id="btn-next" class="btn-option hidden" style="background: var(--roxo); text-align: center; color: white; font-weight: bold;">Virar a página --></button>
     </div>
 
     <div id="final-screen" class="hidden">
         <h1>Relatório de Desempenho</h1>
-        <div id="badges-container"></div>
-        <p id="final-diagnosis" style="font-size: 1.2rem; border-left: 5px solid var(--roxo); padding-left: 15px;"></p>
-        <button class="btn-option" onclick="sendEmail()" style="background: var(--amarelo); text-align: center; font-weight: bold;">📩 Enviar Relatório ao Prof. Ricardo</button>
-        <button class="btn-option" onclick="location.reload()" style="text-align: center;">Tentar Novamente</button>
+        <div id="badges-container" class="hidden" style="text-align: center; margin-bottom: 30px;">
+            <h3>🏅 Medalhas Conquistadas:</h3>
+            <div id="badges-list"></div>
+        </div>
+        <div id="final-diagnosis-box" style="background: #fff3e0; padding: 40px; border-radius: 15px; border: 3px dashed #444;">
+            <p id="final-diagnosis" style="font-size: 1.7rem; text-align: center;"></p>
+        </div>
+        <br>
+        <button class="btn-option" onclick="location.reload()" style="text-align: center; background: var(--azul); font-weight: bold;">Tentar Novamente</button>
     </div>
 
-    <footer>
-        Mentor: <strong>Prof. Ricardo de Faria Barros</strong> | ricardo@animodh.com.br
-    </footer>
+    <footer>Mentor: <strong>Prof. Ricardo de Faria Barros</strong></footer>
 </div>
 
 <script>
-    // [LÓGICA JAVASCRIPT IGUAL À VERSÃO ANTERIOR, INCLUINDO AS 15 SITUAÇÕES]
-    let playerName = "";
-    let v = 50, c = 50, s = 50, currentPhase = 0;
+    let playerName = "", v = 50, c = 50, s = 50, currentPhase = 0;
     let myBadges = new Set();
-    let finalDiag = "";
 
     const scenarios = [
-        { t: "O Ultimato", d: "Fornecedor: 'Ou aceita +15% agora, ou corto o fornecimento amanhã.'", ops: [
-            { text: "Aceito agora.", v: -20, c: 5, s: -10, f: "Você priorizou a segurança, mas feriu seu Valor (V)." },
-            { text: "Pode cortar!", v: -10, c: -30, s: 0, f: "Agressividade no mundo BANI gera quebra de cadeia." },
-            { text: "Quais critérios justificam isso? (MAPAN)", v: 20, c: 10, s: 10, f: "Excelente! Usou Critérios Objetivos e sinalizou alternativa.", badge: "Estrategista de Valor" }
+        { t: "O Ultimato do Fornecedor", d: "Varejo: Um fornecedor crucial exige um aumento imediato de 20%, ameaçando interromper a entrega amanhã.", ops: [
+            { text: "Aceitar imediatamente por medo da ruptura.", v: -20, c: 5, s: -10, f: "Você ignorou seu MAPAN (Pilar 5). Cedeu sem plano B." },
+            { text: "Investigar: 'O que justifica esse custo? Podemos negociar o prazo?'", v: 15, c: 15, s: 15, f: "Critérios Objetivos (Pilar 4)! Você buscou fatos antes de ceder.", badge: "Estrategista" },
+            { text: "Ameaçar cancelar todos os pedidos futuros.", v: -10, c: -40, s: -5, f: "Ataque pessoal (Não seguiu o Pilar 1). Destruiu o vínculo humano." }
         ]},
-        { t: "Regulamento Rígido", d: "Setor Público: 'O regulamento atual proíbe essa integração tecnológica.'", ops: [
-            { text: "Tentar forçar a regra.", v: 0, c: -20, s: -10, f: "Atrito burocrático gera paralisia." },
-            { text: "Qual o sentido maior da regra? Podemos adaptar?", v: 15, c: 15, s: 20, f: "Escuta ativa e foco no benefício coletivo.", badge: "Diplomata Ágil" },
-            { text: "Cancelar o projeto.", v: -30, c: 0, s: -20, f: "Desistir reduz a relevância institucional." }
-        ]},
-        { t: "Crise Logística", d: "Estoque retido e liderança pressionando agressivamente.", ops: [
-            { text: "Pausa Frankliana e plano criativo.", v: 10, c: 20, s: 20, f: "Antifragilidade: crescer sob pressão.", badge: "Resiliência BANI" },
-            { text: "Reagir com a mesma agressividade.", v: -10, c: -30, s: -10, f: "A ansiedade do mundo BANI é contagiosa." },
-            { text: "Omitir a gravidade do problema.", v: -20, c: -50, s: -30, f: "A mentira é a morte da confiança." }
-        ]},
-        { t: "Dilema de Integridade", d: "Oferta de 'atalho' financeiro para fechar contrato público.", ops: [
-            { text: "Aceitar para salvar o trimestre.", gameOver: true, f: "Integridade violada. Carreira e reputação destruídas." },
-            { text: "Ignorar a proposta.", v: 0, c: -10, s: -10, f: "Omissão pode ser vista como conivência." },
-            { text: "Recusar e reportar (Teste do Travesseiro).", v: 0, c: 50, s: 50, f: "Ética inabalável: o pilar do longo prazo.", badge: "Guardião Ético" }
-        ]},
-        { t: "Cliente Ansioso", d: "Consumidor furioso no varejo por falha técnica grave.", ops: [
-            { text: "Expulsar da loja.", v: 0, c: -40, s: -10, f: "Perda de reputação imediata." },
-            { text: "CNV: Validar frustração e propor ordem.", v: 10, c: 30, s: 20, f: "Comunicação Não-Violenta desarma bombas.", badge: "Empatia Tática" },
-            { text: "Chorar junto com o cliente.", v: -20, c: 10, s: -10, f: "Empatia sem liderança não resolve o dano." }
-        ]},
-        { t: "Corte de Verba", d: "Corte repentino de 30% no orçamento da licitação.", ops: [
-            { text: "Abandonar o projeto.", v: -30, c: 0, s: -10, f: "Falta de adaptabilidade." },
-            { text: "Focar na Essencialidade: Salvar o core.", v: 20, c: 10, s: 30, f: "Agilidade Cognitiva em tempos de escassez.", badge: "Mestre da Essência" },
-            { text: "Mentir que entregará tudo.", v: -50, c: -50, s: -50, f: "Promessa impossível é suicídio profissional." }
-        ]},
-        { t: "O Monopolista", d: "Fornecedor único impõe condições leoninas.", ops: [
-            { text: "Submeter-se sem questionar.", v: -40, c: 0, s: -20, f: "Perda total de autonomia." },
-            { text: "Co-criação: Como girar mais rápido juntos?", v: 30, c: 20, s: 10, f: "Curiosidade Radical gera novos caminhos.", badge: "Inovador Sistêmico" },
-            { text: "Ameaçar juridicamente.", v: -10, c: -50, s: -30, f: "Conflito com monopólio costuma ser fatal." }
-        ]},
-        { t: "Gerações em Choque", d: "Jovem tech despreza experiência do sênior na mesa.", ops: [
-            { text: "Impor autoridade por tempo de casa.", v: 0, c: -30, s: -10, f: "Autoridade não é liderança." },
-            { text: "Longelescência: Unir experiência e frescor.", v: 20, c: 30, s: 30, f: "Sinergia geracional gera valor perene.", badge: "Integrador de Saberes" },
-            { text: "Isolar o jovem do processo.", v: -10, c: 0, s: -40, f: "Perda de inovação." }
-        ]},
-        { t: "Caos de Dados", d: "Dados contraditórios e pressão de 10 minutos para decidir.", ops: [
-            { text: "Chutar um valor médio.", v: -40, c: -20, s: -20, f: "Decisão cega no mundo não-linear." },
-            { text: "Transparência: Pedir 24h para auditoria.", v: 10, c: 40, s: 20, f: "Integridade é mais veloz que a pressa.", badge: "Líder Consciente" },
-            { text: "Culpar a TI pelos dados.", v: 0, c: -40, s: -10, f: "Transferência de culpa destrói times." }
-        ]},
-        { t: "Ponte de Ouro", d: "Acordo quase fechado, mas a outra parte parece infeliz.", ops: [
-            { text: "Comemorar a 'vitória'.", v: 30, c: -50, s: -30, f: "Você ganhou o contrato, mas perdeu o parceiro." },
-            { text: "Ignorar e assinar logo.", v: 20, c: 0, s: 0, f: "Risco de descumprimento futuro." },
-            { text: "Ponte de Ouro: Como você também vence?", v: 10, c: 50, s: 40, f: "Acordos sustentáveis sobrevivem a crises.", badge: "Arquiteto de Acordos" }
-        ]},
-        { t: "Impacto da IA", d: "Pressão para demitir em massa e usar IA pura.", ops: [
-            { text: "Demissão em massa imediata.", v: 40, c: -60, s: -40, f: "Lucro imediato, colapso de cultura." },
-            { text: "Transição Híbrida: Humano + IA.", v: 20, c: 30, s: 40, f: "Inteligência Aumentada é o futuro.", badge: "Visionário" },
-            { text: "Banir IA da empresa.", v: -30, c: 10, s: 0, f: "Obsolescência programada." }
-        ]},
-        { t: "Viral Negativo", d: "Fake news viralizando sobre sua ética pública.", ops: [
-            { text: "Processar e pedir censura.", v: -10, c: -20, s: -10, f: "Efeito Streisand: o viral aumenta." },
-            { text: "Live de Transparência e Vulnerabilidade.", v: 10, c: 40, s: 30, f: "Verdade é a única defesa no mundo BANI.", badge: "Comunicador Autêntico" },
-            { text: "Não responder.", v: -40, c: -40, s: -20, f: "Quem cala permite a narrativa alheia." }
-        ]},
-        { t: "Sustentabilidade", d: "Fornecedor escuso é 40% mais barato.", ops: [
-            { text: "Focar no lucro trimestral.", v: 40, c: -50, s: -60, f: "Sua marca ficou frágil a escândalos." },
-            { text: "Desenvolvimento de Parceria Ética.", v: 10, c: 30, s: 40, f: "ESG na prática gera valor futuro.", badge: "Líder Sustentável" },
-            { text: "Romper sem plano B.", v: -40, c: 20, s: 10, f: "Ética sem viabilidade é falência." }
-        ]},
-        { t: "Escassez Crítica", d: "Insumos hospitalares triplicaram de preço na crise.", ops: [
-            { text: "Pagar e não questionar.", v: -60, c: 10, s: 10, f: "Irresponsabilidade fiscal." },
-            { text: "Negociação Open Book (Transparência).", v: 10, c: 30, s: 30, f: "Parceria em tempos de dor.", badge: "Gestor Humanista" },
-            { text: "Esperar a crise passar.", v: -20, c: -60, s: -60, f: "Omissão que custa vidas." }
-        ]},
-        { t: "Trabalho Híbrido", d: "Talentos exigem flexibilidade ou sairão.", ops: [
-            { text: "Comandar e Controlar: 100% presencial.", v: 0, c: -50, s: -40, f: "Fuga de cérebros." },
-            { text: "Gestão por Confiança e Resultados.", v: 20, c: 40, s: 30, f: "Adaptabilidade é a nova regra.", badge: "Líder Moderno" },
-            { text: "Bônus financeiro sem flexibilidade.", v: -30, c: -10, s: -20, f: "Propósito não se compra." }
+        { t: "Rigidez no Setor Público", d: "Público: Um gestor trava um projeto inovador alegando que 'sempre foi feito assim', negando qualquer conversa.", ops: [
+            { text: "Pausa Frankliana e buscar entender o medo dele.", v: 10, c: 25, s: 20, f: "Antifragilidade! Você regulou sua emoção para conectar.", badge: "Mestre do Sentido" },
+            { text: "Focar nos Interesses: 'O que garante segurança jurídica para você?'", v: 20, c: 15, s: 15, f: "Interesses vs Posições (Pilar 2). Investigou a necessidade oculta.", badge: "Diplomata" },
+            { text: "Ignorar o gestor e tentar contornar a regra.", v: -5, c: -30, s: -15, f: "Faltou transparência. Você criou um inimigo na mesa." }
         ]}
     ];
 
-    function toggleGlossario() {
-        const modal = document.getElementById('modal-glossario');
-        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-    }
-
-    function initGame() {
-        playerName = document.getElementById('player-name').value;
-        if(!playerName) return alert("Por favor, identifique-se.");
-        document.getElementById('setup-screen').classList.add('hidden');
-        document.getElementById('game-screen').classList.remove('hidden');
-        renderPhase();
-    }
-
+    function toggleModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
+    
+    function initGame() { playerName = document.getElementById('player-name').value; if(!playerName) return alert("Assine seu diário."); document.getElementById('setup-screen').classList.add('hidden'); document.getElementById('game-screen').classList.remove('hidden'); renderPhase(); }
+    
     function renderPhase() {
-        const data = scenarios[currentPhase];
-        document.getElementById('phase-title').innerText = `${currentPhase + 1}/15: ${data.t}`;
+        const data = scenarios[currentPhase]; if(!data) return showFinal();
+        document.getElementById('phase-title').innerText = `${currentPhase + 1}/${scenarios.length}: ${data.t}`;
         document.getElementById('scenario-text').innerText = data.d;
-        const container = document.getElementById('options-container');
-        container.innerHTML = "";
-        data.ops.forEach(o => {
-            const b = document.createElement('button');
-            b.className = 'btn-option';
-            b.innerText = o.text;
-            b.onclick = () => selectOption(o);
-            container.appendChild(b);
-        });
+        const container = document.getElementById('options-container'); container.innerHTML = "";
+        data.ops.forEach(o => { const b = document.createElement('button'); b.className = 'btn-option'; b.innerText = o.text; b.onclick = () => selectOption(o); container.appendChild(b); });
         updateBars();
     }
 
     function selectOption(o) {
-        if(o.gameOver) { alert(o.f); return location.reload(); }
         v += o.v || 0; c += o.c || 0; s += o.s || 0;
         if(o.badge) myBadges.add(o.badge);
-        const fb = document.getElementById('feedback-box');
-        fb.innerHTML = `<strong>Feedback:</strong> ${o.f}`;
-        fb.classList.remove('hidden');
-        document.getElementById('options-container').innerHTML = "";
-        document.getElementById('btn-next').classList.remove('hidden');
+        const fb = document.getElementById('feedback-box'); fb.innerHTML = `<strong>Feedback:</strong> ${o.f}`; fb.classList.remove('hidden');
+        document.getElementById('options-container').innerHTML = ""; document.getElementById('btn-next').classList.remove('hidden');
         updateBars();
     }
 
-    document.getElementById('btn-next').onclick = () => {
-        currentPhase++;
-        document.getElementById('feedback-box').classList.add('hidden');
-        document.getElementById('btn-next').classList.add('hidden');
-        if(currentPhase < scenarios.length) renderPhase();
-        else showFinal();
-    };
-
-    function updateBars() {
-        document.getElementById('bar-v').style.width = Math.max(0, Math.min(100, v)) + "%";
-        document.getElementById('bar-c').style.width = Math.max(0, Math.min(100, c)) + "%";
-        document.getElementById('bar-s').style.width = Math.max(0, Math.min(100, s)) + "%";
-        const bars = document.querySelectorAll('.bar-in');
-        bars.forEach(b => {
-            let val = parseInt(b.style.width);
-            b.style.backgroundColor = val > 65 ? "#caffbf" : (val > 35 ? "#fdffb6" : "#ffadad");
-        });
+    document.getElementById('btn-next').onclick = () => { currentPhase++; document.getElementById('feedback-box').classList.add('hidden'); document.getElementById('btn-next').classList.add('hidden'); renderPhase(); };
+    
+    function updateBars() { 
+        document.getElementById('bar-v').style.width = Math.max(0, Math.min(100, v)) + "%"; 
+        document.getElementById('bar-c').style.width = Math.max(0, Math.min(100, c)) + "%"; 
+        document.getElementById('bar-s').style.width = Math.max(0, Math.min(100, s)) + "%"; 
+        const bars = document.querySelectorAll('.bar-in'); 
+        bars.forEach(b => { let val = parseInt(b.style.width); b.style.backgroundColor = val > 65 ? "#caffbf" : (val > 35 ? "#fdffb6" : "#ffadad"); }); 
     }
 
     function showFinal() {
         document.getElementById('game-screen').classList.add('hidden');
         document.getElementById('final-screen').classList.remove('hidden');
         let media = (v + c + s) / 3;
-        finalDiag = media > 80 ? "MESTRE DAS PONTES" : "EM DESENVOLVIMENTO";
-        const badgesHtml = Array.from(myBadges).map(b => `<span class="badge">🏅 ${b}</span>`).join(" ");
-        document.getElementById('badges-container').innerHTML = `<h3>Suas Medalhas:</h3>${badgesHtml}`;
-        document.getElementById('final-diagnosis').innerHTML = `<strong>Navegador:</strong> ${playerName}<br><strong>Diagnóstico Final:</strong> ${finalDiag}`;
-    }
+        let diag = ""; let showBadges = true;
 
-    function sendEmail() {
-        const body = `Olá Professor Ricardo,\n\nConcluí o desafio BANI.\nNome: ${playerName}\nPontos: V:${v} C:${c} S:${s}\nMedalhas: ${Array.from(myBadges).join(", ")}`;
-        window.location.href = `mailto:ricardo@animodh.com.br?subject=Resultado BANI - ${playerName}&body=${encodeURIComponent(body)}`;
+        if (media > 80) diag = "🦁 <strong>LEÃO DAS PONTES:</strong> Você usa os 5 Pilares de Harvard como escudo e espada. Brilhante!";
+        else if (v > 75) diag = "🦈 <strong>TUBARÃO DE AQUÁRIO:</strong> Muito valor, mas a confiança está no ralo. Sem vínculo humano (Pilar 1), você não dura.";
+        else if (c > 75) diag = "🧸 <strong>URSINHO CARINHOSO:</strong> Todos confiam em você, mas seu MAPAN é fraco. Aprenda a dizer não!";
+        else { diag = "🦆 <strong>NÁUFRAGO DE BÓIA:</strong> O caos te engoliu. Releia os manuais nos post-its!"; showBadges = false; }
+
+        if (showBadges && myBadges.size > 0) {
+            document.getElementById('badges-list').innerHTML = Array.from(myBadges).map(b => `<span style="background:var(--verde); padding:10px; border-radius:10px; margin:5px;">🏅 ${b}</span>`).join(" ");
+            document.getElementById('badges-container').classList.remove('hidden');
+        }
+        document.getElementById('final-diagnosis').innerHTML = `<strong>Navegador:</strong> ${playerName}<br><br>${diag}`;
     }
 </script>
 </body>
