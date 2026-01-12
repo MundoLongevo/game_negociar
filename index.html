@@ -174,14 +174,243 @@
             { text: "Interesses: 'O que garante segurança jurídica para você?'", v: 20, c: 15, s: 15, f: "Pilar 2 de Harvard: Investigou a necessidade real por trás da regra.", badge: "Diplomata" },
             { text: "Tentar contornar o gestor.", v: -5, c: -30, s: -15, f: "Faltou Transparência Radical. Você aumentou a incompreensão." }
         ]}
-        // [Professor: Continue adicionando as 15 situações seguindo esta estrutura]
+   <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Professor Ricardo de Faria Barros">
+    <title>Negociar num Mundo Vuca-Bani</title>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdf5e6; --azul: #a2d2ff; --verde: #caffbf;
+            --amarelo: #fdffb6; --roxo: #cdb4db; --vermelho: #ffadad;
+            --laranja: #ffcc80; --text-color: #333; --border-sketch: 2.5px solid #444;
+        }
+        body {
+            background-color: #e5e5e5; background-image: radial-gradient(#d1d1d1 1.5px, transparent 1.5px);
+            background-size: 25px 25px; font-family: 'Architects Daughter', cursive;
+            font-size: 19px; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0; padding: 20px; color: var(--text-color);
+        }
+        #notebook-page {
+            background-color: var(--bg-color); width: 100%; max-width: 950px;
+            min-height: 85vh; padding: 50px; box-shadow: 15px 15px 0px #444;
+            border: var(--border-sketch); border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
+            position: relative; display: flex; flex-direction: column; z-index: 1;
+        }
+        
+        /* POST-ITS LATERAIS */
+        .post-it-container { position: fixed; right: 10px; top: 10px; display: flex; flex-direction: column; gap: 10px; z-index: 100; }
+        .post-it {
+            width: 190px; padding: 12px; border: var(--border-sketch); 
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1); cursor: pointer; 
+            font-size: 0.85rem; transition: 0.3s;
+        }
+        .post-it:hover { transform: scale(1.05) rotate(0deg); }
+        #post-it-comp { background-color: var(--amarelo); transform: rotate(2deg); }
+        #post-it-harvard { background-color: var(--verde); transform: rotate(-2deg); }
+        #post-it-termos { background-color: var(--azul); transform: rotate(1deg); }
+        #post-it-vuca { background-color: var(--laranja); transform: rotate(-1deg); }
+
+        /* MODAIS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--bg-color); padding: 40px; max-width: 800px; max-height: 90vh; overflow-y: auto; border: 4px solid #444; border-radius: 25px; box-shadow: 15px 15px 0px var(--text-color); }
+        .pillar-box { border-left: 8px solid; padding-left: 15px; margin-bottom: 20px; }
+        
+        /* INTERFACE JOGO */
+        .status-container { display: flex; justify-content: space-around; margin-bottom: 30px; border-bottom: 3px dashed #ccc; padding-bottom: 15px; font-weight: bold; }
+        .bar-out { height: 18px; width: 140px; border: 2px solid #444; background: #fff; border-radius: 8px; overflow: hidden; }
+        .bar-in { height: 100%; width: 50%; transition: width 0.5s ease; background-color: var(--verde); }
+        .btn-option { display: block; width: 100%; padding: 18px; margin: 10px 0; background: white; border: var(--border-sketch); font-family: 'Architects Daughter', cursive; font-size: 1.2rem; cursor: pointer; border-radius: 10px 30px; text-align: left; }
+        .btn-option:hover { background: var(--amarelo); }
+        footer { margin-top: auto; font-size: 1.1rem; text-align: right; border-top: 2px solid #ddd; padding-top: 15px; }
+        .hidden { display: none; }
+        .badge { display: inline-block; padding: 8px 15px; margin: 5px; border: 1px solid #444; border-radius: 10px; background: var(--verde); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<div class="post-it-container">
+    <div id="post-it-comp" class="post-it" onclick="toggleModal('modal-comp')"><strong>📑 Competências</strong><br>Do Negociador (1-6)</div>
+    <div id="post-it-harvard" class="post-it" onclick="toggleModal('modal-harvard')"><strong>⚖️ Pilares Harvard</strong><br>Guia Prático</div>
+    <div id="post-it-termos" class="post-it" onclick="toggleModal('modal-termos')"><strong>🔎 Dicionário</strong><br>Termos Técnicos</div>
+    <div id="post-it-vuca" class="post-it" onclick="toggleModal('modal-vuca')"><strong>🌍 Mundo VUCA-BANI</strong><br>Entenda o Cenário</div>
+</div>
+
+<div id="modal-comp" class="modal" onclick="closeModals()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 style="text-align:center; text-decoration: underline;">Competências Emergentes do Negociador</h2>
+        <div class="pillar-box" style="border-color: var(--azul);"><strong>1. Antifragilidade:</strong> Usar o caos para evoluir. Pausa Frankliana.</div>
+        <div class="pillar-box" style="border-color: var(--laranja);"><strong>2. Escuta Logoterapêutica:</strong> Buscar o sentido existencial do outro.</div>
+        <div class="pillar-box" style="border-color: var(--verde);"><strong>3. Agilidade Cognitiva:</strong> Propor saídas criativas e não-lineares.</div>
+        <div class="pillar-box" style="border-color: var(--roxo);"><strong>4. CNV e Transparência:</strong> Clareza radical e limites honestos.</div>
+        <div class="pillar-box" style="border-color: var(--vermelho);"><strong>5. Resiliência Ética:</strong> Integridade sob pressão. Teste do Travesseiro.</div>
+        <div class="pillar-box" style="border-color: var(--azul);"><strong>6. Humildade Intelectual:</strong> Co-criar e aprender com a outra parte.</div>
+        <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--verde);">Voltar</button>
+    </div>
+</div>
+
+<div id="modal-harvard" class="modal" onclick="closeModals()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 style="text-align:center; background: var(--vermelho);">Os 5 Pilares de Harvard</h2>
+        <p><strong>1. Separar Pessoas do Problema:</strong> Preserve o vínculo humano.</p>
+        <p><strong>2. Interesses vs Posições:</strong> Foque no "porquê", não no ego.</p>
+        <p><strong>3. Opções de Ganho Mútuo:</strong> Aumente o bolo antes de dividir.</p>
+        <p><strong>4. Critérios Objetivos:</strong> Use padrões externos e justos.</p>
+        <p><strong>5. MAPAN (BATNA):</strong> Tenha sempre um Plano B de saída.</p>
+        <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--azul);">Entendido!</button>
+    </div>
+</div>
+
+<div id="modal-termos" class="modal" onclick="closeModals()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 style="text-align:center; background: var(--azul);">Dicionário do Negociador</h2>
+        <p><strong>ZOPA:</strong> Zona de Possível Acordo (Encontro de interesses).</p>
+        <p><strong>Economia Comportamental:</strong> Como o cérebro falha ao decidir sob pressão.</p>
+        <p><strong>Negociação por Princípios:</strong> Foco na justiça e critérios técnicos.</p>
+        <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--amarelo);">Fechar</button>
+    </div>
+</div>
+
+<div id="modal-vuca" class="modal" onclick="closeModals()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 style="text-align:center; background: var(--laranja);">O Cenário VUCA e BANI</h2>
+        <p><strong>VUCA:</strong> Volátil, Incerto, Complexo e Ambíguo.</p>
+        <p><strong>BANI:</strong> Frágil, Ansioso, Não-linear e Incompreensível.</p>
+        <p><em>O Negociador usa suas competências para domar este caos.</em></p>
+        <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--laranja);">Fechar</button>
+    </div>
+</div>
+
+<div id="notebook-page">
+    <div id="setup-screen">
+        <h1 style="line-height: 1.1;">Negociar num Mundo Vuca-Bani</h1>
+        <p style="font-size: 1.3rem;">Assine seu nome para começar a jornada estratégica:</p>
+        <input type="text" id="player-name" placeholder="Seu nome..." style="font-family: 'Architects Daughter', cursive; border: none; border-bottom: 3px dashed #444; background: transparent; padding: 10px; width: 90%; font-size: 1.6rem; outline: none;">
+        <br><br>
+        <button class="btn-option" onclick="initGame()" style="text-align:center; background: var(--verde); font-weight: bold;">Iniciar Simulação</button>
+    </div>
+
+    <div id="game-screen" class="hidden">
+        <div class="status-container">
+            <div>V <div class="bar-out"><div id="bar-v" class="bar-in"></div></div></div>
+            <div>C <div class="bar-out"><div id="bar-c" class="bar-in"></div></div></div>
+            <div>S <div class="bar-out"><div id="bar-s" class="bar-in"></div></div></div>
+        </div>
+        <h2 id="phase-title">Cenário</h2>
+        <p id="scenario-text" style="font-size: 1.4rem; line-height: 1.5;"></p>
+        <div id="options-container"></div>
+        <div id="feedback-box" class="hidden" style="font-size: 1.3rem; padding: 15px; border: 2.5px dashed #444; background: var(--amarelo);"></div>
+        <button id="btn-next" class="btn-option hidden" style="background: var(--roxo); text-align: center; color: white; font-weight: bold;">Virar a página --></button>
+    </div>
+
+    <div id="final-screen" class="hidden">
+        <h1>Veredito Final</h1>
+        <div id="badges-container" class="hidden" style="text-align: center; margin-bottom: 20px;">
+            <h3>🏅 Medalhas:</h3>
+            <div id="badges-list"></div>
+        </div>
+        <div id="final-diagnosis-box" style="background: #fff3e0; padding: 30px; border-radius: 15px; border: 3px dashed #444;">
+            <p id="final-diagnosis" style="font-size: 1.5rem; text-align: center;"></p>
+        </div>
+        <br><button class="btn-option" onclick="location.reload()" style="text-align: center; background: var(--azul); font-weight: bold;">Recomeçar</button>
+    </div>
+
+    <footer>Mentor: <strong>Prof. Ricardo de Faria Barros</strong></footer>
+</div>
+
+<script>
+    let playerName = "", v = 50, c = 50, s = 50, currentPhase = 0; 
+    let myBadges = new Set();
+
+    const scenarios = [
+        { t: "Ultimato do Fornecedor", d: "Varejo: Fornecedor exige +20% imediato ou corta a entrega amanhã sob alegação de custos logísticos voláteis.", ops: [
+            { text: "Aceitar por medo.", v: -20, c: 5, s: -10, f: "Faltou MAPAN. Você reagiu ao mundo Ansioso sem um plano B." },
+            { text: "Critérios Objetivos: 'O que justifica esse aumento?'", v: 20, c: 15, s: 15, f: "Excelente! Você domou a volatilidade com fatos técnicos.", badge: "Estrategista" },
+            { text: "Ameaçar cancelar tudo.", v: -10, c: -40, s: -5, f: "Pilar 1 de Harvard violado: Você atacou a pessoa, não o problema." }
+        ]},
+        { t: "Bloqueio Burocrático", d: "Público: O parceiro afirma que 'a regra não permite' mudar nada, demonstrando a fragilidade (Brittle) do sistema.", ops: [
+            { text: "Pausa Frankliana e entender o medo dele.", v: 10, c: 25, s: 20, f: "Antifragilidade! Você regulou a emoção para evoluir no caos.", badge: "Mestre do Sentido" },
+            { text: "Interesses: 'O que garante segurança jurídica para você?'", v: 20, c: 15, s: 15, f: "Pilar 2 de Harvard: Investigou a necessidade real por trás da regra.", badge: "Diplomata" },
+            { text: "Tentar contornar o gestor.", v: -5, c: -30, s: -15, f: "Faltou Transparência Radical. Você aumentou a incompreensão." }
+        ]},
+        { t: "Viral Negativo", d: "Crise: Um vídeo fake atacando sua marca viraliza. O mundo tornou-se Não-linear e a ansiedade do time dispara.", ops: [
+            { text: "Transparência Radical: Live explicando os fatos.", v: 10, c: 40, s: 30, f: "Correto! Competência 4: CNV e Transparência constrói confiança.", badge: "Comunicador Ágil" },
+            { text: "Processar e pedir censura imediata.", v: -10, c: -20, s: -10, f: "O ataque agressivo gera mais 'hate' e fragilidade." },
+            { text: "Silêncio total esperando passar.", v: -30, c: -30, s: -20, f: "No mundo BANI, o vácuo de informação é preenchido por mentiras." }
+        ]},
+        { t: "Dilema de Integridade", d: "Público: Oferta de 'atalho financeiro' para liberar verba pública travada.", ops: [
+            { text: "Aceitar para salvar o projeto.", gameOver: true, f: "Resiliência Ética falhou. A ética não é negociável." },
+            { text: "Recusar e reportar (Teste do Travesseiro).", v: 0, c: 50, s: 50, f: "Integridade inabalável. Capital de Reputação construído.", badge: "Guardião Ético" },
+            { text: "Fingir que não ouviu.", v: 0, c: -10, s: -10, f: "Omissão é fragilidade ética." }
+        ]},
+        { t: "Fornecedor Monopolista", d: "Varejo: O único fornecedor de um insumo dita regras duras. O cenário é de extrema Incompreensão.", ops: [
+            { text: "Humildade Intelectual: 'Como podemos co-criar?'", v: 30, c: 20, s: 10, f: "Brilhante! Competência 6 aplicada para abrir novos caminhos.", badge: "Inovador" },
+            { text: "Submeter-se totalmente.", v: -40, c: 0, s: -20, f: "Você virou refém do cenário. Perda de Valor total." },
+            { text: "Tentar enganar o fornecedor.", v: -10, c: -50, s: -30, f: "A desonestidade destrói parcerias em mercados complexos." }
+        ]},
+        { t: "Corte de Verba Pública", d: "Cenário: Corte repentino de 30% no orçamento. A rigidez do sistema exige Agilidade Cognitiva.", ops: [
+            { text: "Agilidade Cognitiva: Focar no essencial salvador.", v: 20, c: 10, s: 30, f: "Comp. 3: Você propôs saídas criativas onde outros viram fim.", badge: "Ágil" },
+            { text: "Interromper o serviço público.", v: -40, c: -10, s: -20, f: "Faltou pensamento lateral para manter o sentido do serviço." },
+            { text: "Prometer o que não pode entregar.", v: -50, c: -50, s: -50, f: "Promessa vazia é a morte da confiança pública." }
+        ]},
+        { t: "Conflito Intergeracional", d: "Equipe: Jovem talentoso despreza sênior experiente. O clima é de Ambiguidade.", ops: [
+            { text: "Pessoas vs Problema: Validar ambos os lados.", v: 10, c: 30, s: 20, f: "Pilar 1 de Harvard: Você preservou o vínculo humano.", badge: "Mediador" },
+            { text: "Demitir o sênior por ser 'lento'.", v: -10, c: -20, s: -30, f: "Perda de capital intelectual e sentido histórico." },
+            { text: "Calar o jovem para manter a hierarquia.", v: -5, c: -30, s: -10, f: "Sufocou a inovação e gerou ansiedade na equipe." }
+        ]},
+        { t: "Dados Confusos", d: "Decisão: Planilha contraditória com prazo de 5 minutos. Caos total no mundo BANI.", ops: [
+            { text: "Transparência Radical: Pedir 24h para auditoria.", v: 10, c: 40, s: 20, f: "Correto! Integridade acima da pressa desmedida.", badge: "Líder Íntegro" },
+            { text: "Chutar um valor médio.", v: -40, c: -20, s: -20, f: "Decisão cega no escuro. Fragilidade extrema." },
+            { text: "Culpar a equipe pelos erros nos dados.", v: 0, c: -40, s: -10, f: "Ataque pessoal destrói a segurança psicológica." }
+        ]},
+        { t: "Ponte de Ouro", d: "Finalização: O acordo está fechado, mas a outra parte parece infeliz e ansiosa.", ops: [
+            { text: "Ponte de Ouro: 'O que ajustamos para você vencer?'", v: 10, c: 50, s: 40, f: "A Ponte de Ouro garante o longo prazo.", badge: "Arquiteto de Acordos" },
+            { text: "Ignorar e comemorar o lucro.", v: 30, c: -50, s: -30, f: "Vitória pírrica. Eles não voltarão a negociar com você." },
+            { text: "Sair rápido antes que mudem de ideia.", v: 20, c: 0, s: 0, f: "Faltou a conexão humana final. Frágil." }
+        ]},
+        { t: "Emergência de Insumos", d: "Público: Falta de oxigênio hospitalar. O fornecedor triplicou o preço. Pressão máxima.", ops: [
+            { text: "Negociação Open Book: Margem justa mútua.", v: 10, c: 30, s: 30, f: "Comp. 4: Transparência em tempos de dor.", badge: "Humanista" },
+            { text: "Pagar qualquer preço imediatamente.", v: -60, c: 10, s: 10, f: "Risco de improbidade por falta de negociação." },
+            { text: "Aguardar nova licitação demorada.", v: -20, c: -60, s: -60, f: "Omissão que custa vidas. Falta de Sentido." }
+        ]},
+        { t: "A Grande Renúncia", d: "Equipe: Seus melhores talentos querem flexibilidade ou sairão. O mundo é Ansioso.", ops: [
+            { text: "Gestão por Confiança e Marcos.", v: 20, c: 40, s: 30, f: "Adaptabilidade: A nova moeda do Negociador.", badge: "Líder Moderno" },
+            { text: "Impor presencial 100% por controle.", v: 0, c: -50, s: -40, f: "Fuga de cérebros. Fragilidade cultural." },
+            { text: "Dar bônus financeiro e manter as regras.", v: -30, c: -10, s: -20, f: "O propósito não se compra com bônus." }
+        ]},
+        { t: "Sustentabilidade", d: "Varejo: Fornecedor mais barato tem histórico de trabalho escravo.", ops: [
+            { text: "Resiliência Ética: Recusar e buscar alternativa.", v: 0, c: 50, s: 50, f: "Comp. 5: Foco no Legado. Marca protegida.", badge: "Sustentável" },
+            { text: "Comprar dele para garantir o lucro anual.", v: 50, c: -60, s: -70, f: "Sua marca ficou frágil. Um escândalo te destruirá." },
+            { text: "Fingir que não conhece o histórico.", v: 20, c: -30, s: -40, f: "Omissão não protege sua integridade." }
+        ]},
+        { t: "ZOPA Inexistente", d: "Varejo: O preço dele é maior que seu teto. Não há zona de acordo óbvia.", ops: [
+            { text: "Opções de Ganho Mútuo: Trocar prazo por preço.", v: 20, c: 20, s: 10, f: "Pilar 3: Aumentou o bolo com criatividade.", badge: "Criativo" },
+            { text: "Abandonar a mesa sem conversar.", v: 0, c: 0, s: 0, f: "Faltou exploração de interesses." },
+            { text: "Pagar o prejuízo para ter o produto.", v: -50, c: 10, s: 0, f: "Faltou MAPAN. Você perdeu valor." }
+        ]},
+        { t: "Impacto da IA", d: "Decisão: Pressão para trocar 40% dos humanos por IA para baixar custos.", ops: [
+            { text: "Transição Híbrida: Humano potencializado por IA.", v: 20, c: 30, s: 40, f: "Visão sistêmica. Sentido e Lucro unidos.", badge: "Visionário" },
+            { text: "Demitir todos e usar robôs.", v: 40, c: -70, s: -50, f: "Eficiência sem humanidade gera colapso de marca." },
+            { text: "Banir IA por medo do novo.", v: -30, c: 10, s: 0, f: "Obsolescência. Mundo Não-linear ignorado." }
+        ]},
+        { t: "O Legado Final", d: "Mesa: Você deve decidir se foca no lucro de hoje ou no acordo de amanhã.", ops: [
+            { text: "Equilibrar Valor, Confiança e Sentido.", v: 20, c: 20, s: 20, f: "O verdadeiro Mestre das Pontes!", badge: "Mestre das Pontes" },
+            { text: "Focar 100% no Valor monetário.", v: 50, c: -40, s: -40, f: "Estrategista Frio. Sucesso temporário." },
+            { text: "Focar 100% no Bem-estar do outro.", v: -40, c: 50, s: 50, f: "Diplomata Frágil. Altruísmo insustentável." }
+        ]}
     ];
 
     function toggleModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
-    function initGame() { playerName = document.getElementById('player-name').value; if(!playerName) return alert("Assine seu diário."); document.getElementById('setup-screen').classList.add('hidden'); document.getElementById('game-screen').classList.remove('hidden'); renderPhase(); }
-    function renderPhase() { const data = scenarios[currentPhase]; if(!data) return showFinal(); document.getElementById('phase-title').innerText = `${currentPhase + 1}/${scenarios.length}: ${data.t}`; document.getElementById('scenario-text').innerText = data.d; const container = document.getElementById('options-container'); container.innerHTML = ""; data.ops.forEach(o => { const b = document.createElement('button'); b.className = 'btn-option'; b.innerText = o.text; b.onclick = () => selectOption(o); container.appendChild(b); }); updateBars(); }
-    function selectOption(o) { v += o.v || 0; c += o.c || 0; s += o.s || 0; if(o.badge) myBadges.add(o.badge); const fb = document.getElementById('feedback-box'); fb.innerHTML = `<strong>Análise:</strong> ${o.f}`; fb.classList.remove('hidden'); document.getElementById('options-container').innerHTML = ""; document.getElementById('btn-next').classList.remove('hidden'); updateBars(); }
+    function initGame() { playerName = document.getElementById('player-name').value; if(!playerName || playerName.length < 2) return alert("Assine seu nome completo para iniciar."); document.getElementById('setup-screen').classList.add('hidden'); document.getElementById('game-screen').classList.remove('hidden'); renderPhase(); }
+    function renderPhase() { const data = scenarios[currentPhase]; if(!data) return showFinal(); document.getElementById('phase-title').innerText = `${currentPhase + 1}/15: ${data.t}`; document.getElementById('scenario-text').innerText = data.d; const container = document.getElementById('options-container'); container.innerHTML = ""; data.ops.forEach(o => { const b = document.createElement('button'); b.className = 'btn-option'; b.innerText = o.text; b.onclick = () => selectOption(o); container.appendChild(b); }); updateBars(); }
+    function selectOption(o) { if(o.gameOver) { alert(o.f); return location.reload(); } v += o.v || 0; c += o.c || 0; s += o.s || 0; if(o.badge) myBadges.add(o.badge); const fb = document.getElementById('feedback-box'); fb.innerHTML = `<strong>Análise do Mentor:</strong> ${o.f}`; fb.classList.remove('hidden'); document.getElementById('options-container').innerHTML = ""; document.getElementById('btn-next').classList.remove('hidden'); updateBars(); }
     document.getElementById('btn-next').onclick = () => { currentPhase++; document.getElementById('feedback-box').classList.add('hidden'); document.getElementById('btn-next').classList.add('hidden'); renderPhase(); };
     function updateBars() { document.getElementById('bar-v').style.width = Math.max(0, Math.min(100, v)) + "%"; document.getElementById('bar-c').style.width = Math.max(0, Math.min(100, c)) + "%"; document.getElementById('bar-s').style.width = Math.max(0, Math.min(100, s)) + "%"; const bars = document.querySelectorAll('.bar-in'); bars.forEach(b => { let val = parseInt(b.style.width); b.style.backgroundColor = val > 65 ? "#caffbf" : (val > 35 ? "#fdffb6" : "#ffadad"); }); }
-    function showFinal() { document.getElementById('game-screen').classList.add('hidden'); document.getElementById('final-screen').classList.remove('hidden'); let media = (v + c + s) / 3; let diag = ""; let showB = true; if (media > 80) diag = "🦁 <strong>LEÃO DAS PONTES:</strong> Você domou o mundo Vuca-Bani com maestria técnica e emocional!"; else if (v > 75) diag = "🦈 <strong>TUBARÃO DE AQUÁRIO:</strong> Valor alto, mas Confiança zero. No BANI, sem rede de apoio você
+    function showFinal() { document.getElementById('game-screen').classList.add('hidden'); document.getElementById('final-screen').classList.remove('hidden'); let media = (v + c + s) / 3; let diag = ""; let showB = true; if (media > 80) diag = "🦁 <strong>LEÃO DAS PONTES:</strong> Você dominou as 6 Competências. O mundo Vuca-Bani se curva à sua estratégia!"; else if (v > 75) diag = "🦈 <strong>TUBARÃO DE AQUÁRIO:</strong> Muito Valor, mas confiança zero. No BANI, sem confiança você não tem rede de apoio."; else if (c > 75) diag = "🧸 <strong>URSINHO CARINHOSO:</strong> Todos te amam, mas o Valor faliu. Cuidado com o MAPAN fraco!"; else { diag = "🦆 <strong>NÁUFRAGO DE BÓIA:</strong> O caos te engoliu. Suas medalhas afundaram. Releia os manuais nos Post-its!"; showB = false; } if (showB && myBadges.size > 0) { document.getElementById('badges-list').innerHTML = Array.from(myBadges).map(b => `<span class="badge">🏅 ${b}</span>`).join(" "); document.getElementById('badges-container').classList.remove('hidden'); } document.getElementById('final-diagnosis').innerHTML = `<strong>Negociador:</strong> ${playerName}<br><br>${diag}`; }
+</script>
+</body>
+</html>
