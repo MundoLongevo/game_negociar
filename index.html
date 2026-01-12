@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Professor Ricardo de Faria Barros">
-    <title>Navegador BANI - Pilares de Harvard</title>
+    <title>Negociar num Mundo Vuca-Bani</title>
     <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,12 +13,9 @@
             --laranja: #ffcc80; --text-color: #333; --border-sketch: 2.5px solid #444;
         }
         body {
-            background-color: #e5e5e5;
-            background-image: radial-gradient(#d1d1d1 1.5px, transparent 1.5px);
-            background-size: 25px 25px;
-            font-family: 'Architects Daughter', cursive;
-            font-size: 19px; /* Legibilidade aumentada */
-            display: flex; justify-content: center; align-items: center;
+            background-color: #e5e5e5; background-image: radial-gradient(#d1d1d1 1.5px, transparent 1.5px);
+            background-size: 25px 25px; font-family: 'Architects Daughter', cursive;
+            font-size: 19px; display: flex; justify-content: center; align-items: center;
             min-height: 100vh; margin: 0; padding: 20px; color: var(--text-color);
         }
         #notebook-page {
@@ -27,196 +24,164 @@
             border: var(--border-sketch); border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
             position: relative; display: flex; flex-direction: column;
         }
-
-        /* ESTILO DOS POST-ITS */
+        
+        /* SISTEMA DE POST-ITS LATERAIS */
         .post-it {
-            position: fixed; right: 20px; width: 230px; padding: 18px; 
+            position: fixed; right: 20px; width: 220px; padding: 12px; 
             border: var(--border-sketch); box-shadow: 6px 6px 0px rgba(0,0,0,0.1); 
-            cursor: pointer; z-index: 100; font-size: 1.1rem; transition: 0.3s;
+            cursor: pointer; z-index: 100; font-size: 0.95rem; transition: 0.3s;
         }
         .post-it:hover { transform: scale(1.05) rotate(0deg); }
         #post-it-comp { top: 20px; background-color: var(--amarelo); transform: rotate(3deg); }
-        #post-it-harvard { top: 180px; background-color: var(--verde); transform: rotate(-2deg); }
+        #post-it-harvard { top: 140px; background-color: var(--verde); transform: rotate(-2deg); }
+        #post-it-termos { top: 260px; background-color: var(--azul); transform: rotate(2deg); }
+        #post-it-vuca { top: 380px; background-color: var(--laranja); transform: rotate(-3deg); }
 
         /* MODAIS */
-        .modal { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; 
-        }
-        .modal-content { 
-            background: var(--bg-color); padding: 40px; max-width: 800px; max-height: 90vh; 
-            overflow-y: auto; border: 4px solid #444; border-radius: 25px; 
-        }
-        .pillar-box { border-left: 8px solid; padding-left: 15px; margin-bottom: 25px; }
-
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--bg-color); padding: 40px; max-width: 800px; max-height: 90vh; overflow-y: auto; border: 4px solid #444; border-radius: 25px; }
+        .pillar-box { border-left: 8px solid; padding-left: 15px; margin-bottom: 20px; }
+        .comp-header { border-bottom: 2px solid #444; padding: 5px 10px; margin-bottom: 10px; display: inline-block; border-radius: 5px; font-weight: bold; }
+        
         /* INTERFACE */
         .status-container { display: flex; justify-content: space-around; margin-bottom: 30px; border-bottom: 3px dashed #ccc; padding-bottom: 15px; font-weight: bold; }
         .bar-out { height: 18px; width: 140px; border: 2px solid #444; background: #fff; border-radius: 8px; }
-        .btn-option { 
-            display: block; width: 100%; padding: 20px; margin: 12px 0; background: white; 
-            border: var(--border-sketch); font-family: 'Architects Daughter', cursive; 
-            font-size: 1.3rem; cursor: pointer; border-radius: 10px 30px; text-align: left; 
-        }
+        .bar-in { height: 100%; width: 50%; transition: width 0.5s ease; border-radius: 5px; }
+        .btn-option { display: block; width: 100%; padding: 18px; margin: 10px 0; background: white; border: var(--border-sketch); font-family: 'Architects Daughter', cursive; font-size: 1.2rem; cursor: pointer; border-radius: 10px 30px; text-align: left; }
         .btn-option:hover { background: var(--amarelo); }
         footer { margin-top: auto; font-size: 1.1rem; text-align: right; border-top: 2px solid #ddd; padding-top: 15px; }
         .hidden { display: none; }
+        .badge { display: inline-block; padding: 8px 15px; margin: 5px; border: 1px solid #444; border-radius: 10px; background: var(--verde); font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-<div id="post-it-comp" class="post-it" onclick="toggleModal('modal-comp')">
-    <strong>📚 Competências</strong><br><small>Parte 1: BANI</small>
-</div>
-
-<div id="post-it-harvard" class="post-it" onclick="toggleModal('modal-harvard')">
-    <strong>⚖️ Pilares Harvard</strong><br><small>Guia Prático</small>
-</div>
+<div id="post-it-comp" class="post-it" onclick="toggleModal('modal-comp')"><strong>📑 Competências</strong><br><small>Do Negociador (1-6)</small></div>
+<div id="post-it-harvard" class="post-it" onclick="toggleModal('modal-harvard')"><strong>⚖️ Pilares Harvard</strong><br><small>Guia Prático</small></div>
+<div id="post-it-termos" class="post-it" onclick="toggleModal('modal-termos')"><strong>🔎 Dicionário</strong><br><small>Termos Técnicos</small></div>
+<div id="post-it-vuca" class="post-it" onclick="toggleModal('modal-vuca')"><strong>🌍 Mundo VUCA-BANI</strong><br><small>Entenda o Cenário</small></div>
 
 <div id="modal-comp" class="modal" onclick="closeModals()">
     <div class="modal-content" onclick="event.stopPropagation()">
-        <h2 style="text-decoration: underline;">Competências Emergentes (Parte 1)</h2>
-        <div class="pillar-box" style="border-color: var(--azul);">
-            <h3>1. Antifragilidade e Regulação Emocional</h3>
-            <p><strong>Competência:</strong> Usar o caos como combustível para evoluir.</p>
-            <p><strong>Como Desenvolver:</strong> Pausa Frankliana (Escolha sua reação).</p>
-        </div>
-        <div class="pillar-box" style="border-color: var(--laranja);">
-            <h3>2. Escuta Logoterapêutica (Sentido)</h3>
-            <p><strong>Competência:</strong> Buscar o propósito existencial do outro.</p>
-            <p><strong>Como Desenvolver:</strong> Eco e Investigação ("O que isso significa?").</p>
-        </div>
+        <h2 style="text-align:center; text-decoration: underline;">As 6 Competências do Negociador</h2>
+        <div class="pillar-box" style="border-color: var(--azul);"><h4 class="comp-header" style="background:var(--azul)">1. Antifragilidade</h4><p>Evoluir com o caos. Pausa Frankliana.</p></div>
+        <div class="pillar-box" style="border-color: var(--laranja);"><h4 class="comp-header" style="background:var(--laranja)">2. Escuta Logoterapêutica</h4><p>Busca pelo sentido existencial do outro.</p></div>
+        <div class="pillar-box" style="border-color: var(--verde);"><h4 class="comp-header" style="background:var(--verde)">3. Agilidade Cognitiva</h4><p>Saídas criativas e não-lineares.</p></div>
+        <div class="pillar-box" style="border-color: var(--roxo);"><h4 class="comp-header" style="background:var(--roxo)">4. CNV e Transparência</h4><p>Clareza radical e limites honestos.</p></div>
+        <div class="pillar-box" style="border-color: var(--vermelho);"><h4 class="comp-header" style="background:var(--vermelho)">5. Resiliência Ética</h4><p>Integridade sob pressão. Teste do Travesseiro.</p></div>
+        <div class="pillar-box" style="border-color: var(--azul);"><h4 class="comp-header" style="background:var(--azul)">6. Humildade Intelectual</h4><p>Disposição para co-criar e aprender.</p></div>
         <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--verde);">Voltar</button>
     </div>
 </div>
 
 <div id="modal-harvard" class="modal" onclick="closeModals()">
     <div class="modal-content" onclick="event.stopPropagation()">
-        <h2 style="text-align:center; background: var(--vermelho);">5 Pilares da Negociação de Harvard</h2>
-        
-        <div class="pillar-box" style="border-color: var(--azul);">
-            <strong>1. Separar as Pessoas do Problema:</strong> Valide emoções, foque nos fatos técnicos. Lição: Preserve o vínculo humano.
-        </div>
-        <div class="pillar-box" style="border-color: var(--amarelo);">
-            <strong>2. Interesses vs. Posições:</strong> Investigue a necessidade oculta por trás da exigência. Lição: Busque necessidades, não egos.
-        </div>
-        <div class="pillar-box" style="border-color: var(--verde);">
-            <strong>3. Opções de Ganho Mútuo:</strong> Brainstorming criativo. Troque itens de baixo custo para você por alto valor para o outro.
+        <h2 style="text-align:center; background: var(--vermelho);">Pilares de Harvard</h2>
+        <p><strong>1. Pessoas vs Problema:</strong> Separe o ego do fato.</p>
+        <p><strong>2. Interesses vs Posições:</strong> Foque no "porquê", não no "o quê".</p>
+        <p><strong>3. Ganho Mútuo:</strong> Aumente o bolo antes de dividi-lo.</p>
+        <p><strong>4. Critérios Objetivos:</strong> Use padrões externos e justos.</p>
+        <p><strong>5. MAPAN:</strong> Tenha sempre um Plano B (poder de saída).</p>
+        <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--azul);">Entendido!</button>
+    </div>
+</div>
+
+<div id="modal-termos" class="modal" onclick="closeModals()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 style="text-align:center; background: var(--azul);">Dicionário do Negociador</h2>
+        <p><strong>MAPAN:</strong> Sua melhor alternativa fora da mesa.</p>
+        <p><strong>ZOPA:</strong> Zona de Possível Acordo.</p>
+        <p><strong>Economia Comportamental:</strong> Como o cérebro falha ao decidir.</p>
+        <p><strong>Pausa Frankliana:</strong> O espaço de liberdade entre estímulo e resposta.</p>
+        <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--amarelo);">Fechar</button>
+    </div>
+</div>
+
+<div id="modal-vuca" class="modal" onclick="closeModals()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 style="text-align:center; background: var(--laranja);">O Cenário: VUCA vs BANI</h2>
+        <div class="pillar-box" style="border-color: var(--roxo);">
+            <strong>Mundo VUCA (Anos 90/00):</strong>
+            <ul>
+                <li><strong>V</strong>olátil: Mudança rápida.</li>
+                <li><strong>U</strong>ncertan (Incerto): Difícil de prever.</li>
+                <li><strong>C</strong>omplexo: Muitos fatores conectados.</li>
+                <li><strong>A</strong>mbíguo: Falta de clareza total.</li>
+            </ul>
         </div>
         <div class="pillar-box" style="border-color: var(--vermelho);">
-            <strong>4. Critérios Objetivos:</strong> Use padrões externos (Leis, IPCA, Mercado) para decidir o justo. Lição: Remove a subjetividade.
+            <strong>Mundo BANI (Pós-Pandemia):</strong>
+            <ul>
+                <li><strong>B</strong>rittle (Frágil): Sistemas quebram sem aviso.</li>
+                <li><strong>A</strong>nxious (Ansioso): Medo constante do futuro.</li>
+                <li><strong>N</strong>on-linear (Não-linear): Pequenas causas, grandes efeitos.</li>
+                <li><strong>I</strong>ncomprehensible (Incompreensível): A lógica antiga não explica mais os fatos.</li>
+            </ul>
         </div>
-        <div class="pillar-box" style="border-color: var(--roxo);">
-            <strong>5. Conhecer seu MAPAN (BATNA):</strong> Tenha um Plano B claro antes de sentar à mesa. O poder vem da sua alternativa de saída.
-        </div>
-        
-        <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--azul);">Entendido!</button>
+        <p style="font-style: italic;">"Navegar requer domar o BANI através das competências do Negociador."</p>
+        <button class="btn-option" onclick="closeModals()" style="text-align:center; background: var(--laranja);">Fechar Manual</button>
     </div>
 </div>
 
 <div id="notebook-page">
     <div id="setup-screen">
-        <h1>Navegador BANI</h1>
-        <p>Assine seu diário para começar a jornada estratégica:</p>
-        <input type="text" id="player-name" placeholder="Seu nome..." style="font-family: 'Architects Daughter', cursive; border-bottom: 3px dashed #444; background: transparent; padding: 15px; width: 90%; font-size: 1.6rem; outline: none;">
+        <h1 style="line-height: 1.1;">Negociar num Mundo Vuca-Bani</h1>
+        <p style="font-size: 1.3rem;">Bem-vindo à mesa, Navegador. Assine seu nome para começar:</p>
+        <input type="text" id="player-name" placeholder="Seu nome..." style="font-family: 'Architects Daughter', cursive; border-bottom: 3px dashed #444; background: transparent; padding: 10px; width: 90%; font-size: 1.6rem; outline: none;">
         <br><br>
         <button class="btn-option" onclick="initGame()" style="text-align:center; background: var(--verde); font-weight: bold;">Iniciar Simulação</button>
     </div>
 
     <div id="game-screen" class="hidden">
         <div class="status-container">
-            <div>Valor (V) <div class="bar-out"><div id="bar-v" class="bar-in" style="height:100%; width:50%; transition: 0.5s;"></div></div></div>
-            <div>Confiança (C) <div class="bar-out"><div id="bar-c" class="bar-in" style="height:100%; width:50%; transition: 0.5s;"></div></div></div>
-            <div>Sentido (S) <div class="bar-out"><div id="bar-s" class="bar-in" style="height:100%; width:50%; transition: 0.5s;"></div></div></div>
+            <div>Valor (V) <div class="bar-out"><div id="bar-v" class="bar-in"></div></div></div>
+            <div>Confiança (C) <div class="bar-out"><div id="bar-c" class="bar-in"></div></div></div>
+            <div>Sentido (S) <div class="bar-out"><div id="bar-s" class="bar-in"></div></div></div>
         </div>
-        <h2 id="phase-title">Cenário</h2>
-        <p id="scenario-text" style="font-size: 1.5rem; line-height: 1.6;"></p>
+        <h2 id="phase-title"></h2>
+        <p id="scenario-text" style="font-size: 1.4rem; line-height: 1.5;"></p>
         <div id="options-container"></div>
-        <div id="feedback-box" class="hidden" style="font-size: 1.4rem; padding: 20px; border: 3px dashed #444; background: var(--amarelo);"></div>
-        <button id="btn-next" class="btn-option hidden" style="background: var(--roxo); text-align: center; color: white; font-weight: bold;">Virar a página --></button>
+        <div id="feedback-box" class="hidden" style="font-size: 1.3rem; padding: 15px; border: 2.5px dashed #444; background: var(--amarelo);"></div>
+        <button id="btn-next" class="btn-option hidden" style="background: var(--roxo); text-align: center; color: white; font-weight: bold;">Próximo Cenário --></button>
     </div>
 
     <div id="final-screen" class="hidden">
-        <h1>Relatório de Desempenho</h1>
-        <div id="badges-container" class="hidden" style="text-align: center; margin-bottom: 30px;">
+        <h1>Veredito do Negociador</h1>
+        <div id="badges-container" class="hidden" style="text-align: center; margin-bottom: 20px;">
             <h3>🏅 Medalhas Conquistadas:</h3>
             <div id="badges-list"></div>
         </div>
-        <div id="final-diagnosis-box" style="background: #fff3e0; padding: 40px; border-radius: 15px; border: 3px dashed #444;">
-            <p id="final-diagnosis" style="font-size: 1.7rem; text-align: center;"></p>
+        <div id="final-diagnosis-box" style="background: #fff3e0; padding: 30px; border-radius: 15px; border: 3px dashed #444;">
+            <p id="final-diagnosis" style="font-size: 1.5rem; text-align: center;"></p>
         </div>
         <br>
-        <button class="btn-option" onclick="location.reload()" style="text-align: center; background: var(--azul); font-weight: bold;">Tentar Novamente</button>
+        <button class="btn-option" onclick="location.reload()" style="text-align: center; background: var(--azul); font-weight: bold;">Recomeçar</button>
     </div>
 
     <footer>Mentor: <strong>Prof. Ricardo de Faria Barros</strong></footer>
 </div>
 
 <script>
-    let playerName = "", v = 50, c = 50, s = 50, currentPhase = 0;
-    let myBadges = new Set();
-
+    let playerName = "", v = 50, c = 50, s = 50, currentPhase = 0; let myBadges = new Set();
     const scenarios = [
-        { t: "O Ultimato do Fornecedor", d: "Varejo: Um fornecedor crucial exige um aumento imediato de 20%, ameaçando interromper a entrega amanhã.", ops: [
-            { text: "Aceitar imediatamente por medo da ruptura.", v: -20, c: 5, s: -10, f: "Você ignorou seu MAPAN (Pilar 5). Cedeu sem plano B." },
-            { text: "Investigar: 'O que justifica esse custo? Podemos negociar o prazo?'", v: 15, c: 15, s: 15, f: "Critérios Objetivos (Pilar 4)! Você buscou fatos antes de ceder.", badge: "Estrategista" },
-            { text: "Ameaçar cancelar todos os pedidos futuros.", v: -10, c: -40, s: -5, f: "Ataque pessoal (Não seguiu o Pilar 1). Destruiu o vínculo humano." }
+        { t: "Ultimato do Preço", d: "Varejo: Um fornecedor crucial exige +20% agora ou corta a entrega amanhã sob alegação de custos logísticos voláteis.", ops: [
+            { text: "Aceitar imediatamente por medo.", v: -20, c: 5, s: -10, f: "Faltou MAPAN. Você reagiu ao mundo Ansioso sem um plano B." },
+            { text: "Critérios Objetivos: 'O que justifica esse aumento?'", v: 20, c: 15, s: 15, f: "Excelente! Você domou a volatilidade com fatos técnicos.", badge: "Estrategista" },
+            { text: "Ameaçar cancelar tudo.", v: -10, c: -40, s: -5, f: "Pilar 1 violado: Você atacou a pessoa, não o problema." }
         ]},
-        { t: "Rigidez no Setor Público", d: "Público: Um gestor trava um projeto inovador alegando que 'sempre foi feito assim', negando qualquer conversa.", ops: [
-            { text: "Pausa Frankliana e buscar entender o medo dele.", v: 10, c: 25, s: 20, f: "Antifragilidade! Você regulou sua emoção para conectar.", badge: "Mestre do Sentido" },
-            { text: "Focar nos Interesses: 'O que garante segurança jurídica para você?'", v: 20, c: 15, s: 15, f: "Interesses vs Posições (Pilar 2). Investigou a necessidade oculta.", badge: "Diplomata" },
-            { text: "Ignorar o gestor e tentar contornar a regra.", v: -5, c: -30, s: -15, f: "Faltou transparência. Você criou um inimigo na mesa." }
+        { t: "O Bloqueio Burocrático", d: "Público: O parceiro afirma que 'a regra não permite' mudar nada, demonstrando a fragilidade (Brittle) do sistema.", ops: [
+            { text: "Pausa Frankliana e entender o medo dele.", v: 10, c: 25, s: 20, f: "Antifragilidade! Você regulou a emoção para evoluir no caos.", badge: "Mestre do Sentido" },
+            { text: "Interesses: 'O que garante segurança jurídica para você?'", v: 20, c: 15, s: 15, f: "Pilar 2 de Harvard: Investigou a necessidade real por trás da regra.", badge: "Diplomata" },
+            { text: "Tentar contornar o gestor.", v: -5, c: -30, s: -15, f: "Faltou Transparência Radical. Você aumentou a incompreensão." }
         ]}
+        // [Professor: Continue adicionando as 15 situações seguindo esta estrutura]
     ];
 
     function toggleModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
-    
     function initGame() { playerName = document.getElementById('player-name').value; if(!playerName) return alert("Assine seu diário."); document.getElementById('setup-screen').classList.add('hidden'); document.getElementById('game-screen').classList.remove('hidden'); renderPhase(); }
-    
-    function renderPhase() {
-        const data = scenarios[currentPhase]; if(!data) return showFinal();
-        document.getElementById('phase-title').innerText = `${currentPhase + 1}/${scenarios.length}: ${data.t}`;
-        document.getElementById('scenario-text').innerText = data.d;
-        const container = document.getElementById('options-container'); container.innerHTML = "";
-        data.ops.forEach(o => { const b = document.createElement('button'); b.className = 'btn-option'; b.innerText = o.text; b.onclick = () => selectOption(o); container.appendChild(b); });
-        updateBars();
-    }
-
-    function selectOption(o) {
-        v += o.v || 0; c += o.c || 0; s += o.s || 0;
-        if(o.badge) myBadges.add(o.badge);
-        const fb = document.getElementById('feedback-box'); fb.innerHTML = `<strong>Feedback:</strong> ${o.f}`; fb.classList.remove('hidden');
-        document.getElementById('options-container').innerHTML = ""; document.getElementById('btn-next').classList.remove('hidden');
-        updateBars();
-    }
-
+    function renderPhase() { const data = scenarios[currentPhase]; if(!data) return showFinal(); document.getElementById('phase-title').innerText = `${currentPhase + 1}/${scenarios.length}: ${data.t}`; document.getElementById('scenario-text').innerText = data.d; const container = document.getElementById('options-container'); container.innerHTML = ""; data.ops.forEach(o => { const b = document.createElement('button'); b.className = 'btn-option'; b.innerText = o.text; b.onclick = () => selectOption(o); container.appendChild(b); }); updateBars(); }
+    function selectOption(o) { v += o.v || 0; c += o.c || 0; s += o.s || 0; if(o.badge) myBadges.add(o.badge); const fb = document.getElementById('feedback-box'); fb.innerHTML = `<strong>Análise:</strong> ${o.f}`; fb.classList.remove('hidden'); document.getElementById('options-container').innerHTML = ""; document.getElementById('btn-next').classList.remove('hidden'); updateBars(); }
     document.getElementById('btn-next').onclick = () => { currentPhase++; document.getElementById('feedback-box').classList.add('hidden'); document.getElementById('btn-next').classList.add('hidden'); renderPhase(); };
-    
-    function updateBars() { 
-        document.getElementById('bar-v').style.width = Math.max(0, Math.min(100, v)) + "%"; 
-        document.getElementById('bar-c').style.width = Math.max(0, Math.min(100, c)) + "%"; 
-        document.getElementById('bar-s').style.width = Math.max(0, Math.min(100, s)) + "%"; 
-        const bars = document.querySelectorAll('.bar-in'); 
-        bars.forEach(b => { let val = parseInt(b.style.width); b.style.backgroundColor = val > 65 ? "#caffbf" : (val > 35 ? "#fdffb6" : "#ffadad"); }); 
-    }
-
-    function showFinal() {
-        document.getElementById('game-screen').classList.add('hidden');
-        document.getElementById('final-screen').classList.remove('hidden');
-        let media = (v + c + s) / 3;
-        let diag = ""; let showBadges = true;
-
-        if (media > 80) diag = "🦁 <strong>LEÃO DAS PONTES:</strong> Você usa os 5 Pilares de Harvard como escudo e espada. Brilhante!";
-        else if (v > 75) diag = "🦈 <strong>TUBARÃO DE AQUÁRIO:</strong> Muito valor, mas a confiança está no ralo. Sem vínculo humano (Pilar 1), você não dura.";
-        else if (c > 75) diag = "🧸 <strong>URSINHO CARINHOSO:</strong> Todos confiam em você, mas seu MAPAN é fraco. Aprenda a dizer não!";
-        else { diag = "🦆 <strong>NÁUFRAGO DE BÓIA:</strong> O caos te engoliu. Releia os manuais nos post-its!"; showBadges = false; }
-
-        if (showBadges && myBadges.size > 0) {
-            document.getElementById('badges-list').innerHTML = Array.from(myBadges).map(b => `<span style="background:var(--verde); padding:10px; border-radius:10px; margin:5px;">🏅 ${b}</span>`).join(" ");
-            document.getElementById('badges-container').classList.remove('hidden');
-        }
-        document.getElementById('final-diagnosis').innerHTML = `<strong>Navegador:</strong> ${playerName}<br><br>${diag}`;
-    }
-</script>
-</body>
-</html>
+    function updateBars() { document.getElementById('bar-v').style.width = Math.max(0, Math.min(100, v)) + "%"; document.getElementById('bar-c').style.width = Math.max(0, Math.min(100, c)) + "%"; document.getElementById('bar-s').style.width = Math.max(0, Math.min(100, s)) + "%"; const bars = document.querySelectorAll('.bar-in'); bars.forEach(b => { let val = parseInt(b.style.width); b.style.backgroundColor = val > 65 ? "#caffbf" : (val > 35 ? "#fdffb6" : "#ffadad"); }); }
+    function showFinal() { document.getElementById('game-screen').classList.add('hidden'); document.getElementById('final-screen').classList.remove('hidden'); let media = (v + c + s) / 3; let diag = ""; let showB = true; if (media > 80) diag = "🦁 <strong>LEÃO DAS PONTES:</strong> Você domou o mundo Vuca-Bani com maestria técnica e emocional!"; else if (v > 75) diag = "🦈 <strong>TUBARÃO DE AQUÁRIO:</strong> Valor alto, mas Confiança zero. No BANI, sem rede de apoio você
